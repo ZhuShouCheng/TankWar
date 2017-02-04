@@ -12,7 +12,7 @@ import java.awt.event.WindowEvent;
 
 public class TankClient extends JFrame
 {
-
+	int x = 50, y = 50;
 	private JPanel contentPane;
 
 	/**
@@ -26,7 +26,7 @@ public class TankClient extends JFrame
 				try
 				{
 					TankClient frame = new TankClient("TankWar");
-					frame.setVisible(true);
+					frame.start();
 				}
 				catch (Exception e)
 				{
@@ -57,11 +57,47 @@ public class TankClient extends JFrame
 		setContentPane(contentPane);
 	}
 
+	public void start()
+	{
+		setVisible(true);
+		
+		new Thread(new RePaint()).start();
+	}
 	public void paint(Graphics g)
 	{
+		super.paint(g);
 		Color c = g.getColor();
 		g.setColor(Color.red);
-		g.fillOval(50, 50, 30, 30);
+		g.fillOval(x, y, 30, 30);
 		g.setColor(c);
+		
+		y += 5;
+	}
+	
+	
+	
+	
+	class RePaint implements Runnable
+	{
+
+		@Override
+		public void run()
+		{
+			while (true)
+			{
+				try
+				{
+					Thread.sleep(100);
+					update(getGraphics());
+					repaint();
+				}
+				catch (InterruptedException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
 	}
 }
