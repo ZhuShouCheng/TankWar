@@ -15,6 +15,8 @@ import java.awt.event.WindowEvent;
 
 public class TankClient extends JFrame
 {
+	public static final int GAME_WIDTH = 800;
+	public static final int GAME_HEIGHT = 600;
 	int x = 50, y = 50;
 	Image OffScreenImage = null;
 	private JPanel contentPane;
@@ -54,7 +56,7 @@ public class TankClient extends JFrame
 		});
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 600);
+		setBounds(100, 100, GAME_WIDTH, GAME_HEIGHT);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -81,7 +83,7 @@ public class TankClient extends JFrame
 	public void update(Graphics g)		//双缓存技术
 	{
 		if (OffScreenImage == null)
-			OffScreenImage = createImage(800, 600);
+			OffScreenImage = createImage(GAME_WIDTH, GAME_HEIGHT);
 		Graphics gImage = OffScreenImage.getGraphics();
 		paint(gImage);
 		g.drawImage(OffScreenImage, 0, 0, null);
