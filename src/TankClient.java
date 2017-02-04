@@ -1,5 +1,8 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.Paint;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -54,4 +57,11 @@ public class TankClient extends JFrame
 		setContentPane(contentPane);
 	}
 
+	public void paint(Graphics g)
+	{
+		Color c = g.getColor();
+		g.setColor(Color.red);
+		g.fillOval(50, 50, 30, 30);
+		g.setColor(c);
+	}
 }
