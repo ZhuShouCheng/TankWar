@@ -12,6 +12,8 @@ import  java.awt.Image;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class TankClient extends JFrame
 {
@@ -48,6 +50,28 @@ public class TankClient extends JFrame
 	public TankClient(String s)
 	{
 		super(s);
+		addKeyListener(new KeyAdapter() {				//键盘事件要添加在JFrame才可以
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				int key = arg0.getKeyCode();
+				if (key == KeyEvent.VK_W)
+				{
+					y -= 5;
+				}
+				else if (key == KeyEvent.VK_S)
+				{
+					y += 5;
+				}
+				else if (key == KeyEvent.VK_D)
+				{
+					x += 5;
+				}
+				else if (key == KeyEvent.VK_A)
+				{
+					x -= 5;
+				}
+			}
+		});
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
@@ -77,7 +101,7 @@ public class TankClient extends JFrame
 		g.fillOval(x, y, 30, 30);
 		g.setColor(c);
 		
-		y += 5;
+		
 	}
 	
 	public void update(Graphics g)		//双缓存技术
