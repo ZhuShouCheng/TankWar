@@ -7,12 +7,16 @@ import java.awt.Paint;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import  java.awt.Image;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class TankClient extends JFrame
 {
 	int x = 50, y = 50;
+	Image OffScreenImage = null;
 	private JPanel contentPane;
 
 	/**
@@ -65,7 +69,7 @@ public class TankClient extends JFrame
 	}
 	public void paint(Graphics g)
 	{
-		super.paint(g);
+		super.paint(g);           //不加这句不会清除以前的图像
 		Color c = g.getColor();
 		g.setColor(Color.red);
 		g.fillOval(x, y, 30, 30);
@@ -74,7 +78,14 @@ public class TankClient extends JFrame
 		y += 5;
 	}
 	
-	
+	public void update(Graphics g)		//双缓存技术
+	{
+		if (OffScreenImage == null)
+			OffScreenImage = createImage(800, 600);
+		Graphics gImage = OffScreenImage.getGraphics();
+		paint(gImage);
+		g.drawImage(OffScreenImage, 0, 0, null);
+	}
 	
 	
 	class RePaint implements Runnable
@@ -88,12 +99,10 @@ public class TankClient extends JFrame
 				try
 				{
 					Thread.sleep(100);
-					update(getGraphics());
 					repaint();
 				}
 				catch (InterruptedException e)
 				{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
