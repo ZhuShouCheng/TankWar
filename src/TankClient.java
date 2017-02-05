@@ -54,6 +54,10 @@ public class TankClient extends JFrame
 			public void keyPressed(KeyEvent arg0) {
 				myTank.keyAction(arg0);
 			}
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				myTank.keyReset(arg0);
+			}
 		});
 		addWindowListener(new WindowAdapter() {
 			@Override
