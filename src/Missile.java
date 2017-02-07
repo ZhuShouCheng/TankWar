@@ -1,5 +1,10 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.util.Vector;
+
+import com.sun.javafx.geom.AreaOp.AddOp;
+import com.sun.swing.internal.plaf.metal.resources.metal;
 
 public class Missile
 {
@@ -60,7 +65,18 @@ public class Missile
 				y += Ymove;
 				break;
 			case STOP:
+				x += Xmove;
 				break;
+		}
+	}
+	
+	public static void keyAction(KeyEvent arg0,Tank t,Vector<Missile> m)
+	{
+		int key = arg0.getKeyCode();
+		if (KeyEvent.VK_J == key)
+		{
+			m.add(new Missile(
+					t.getX()+ 10,t.getY() + 10,t.getDir()));
 		}
 	}
 }

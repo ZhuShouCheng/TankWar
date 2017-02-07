@@ -12,6 +12,7 @@ import  java.awt.Image;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Vector;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -21,8 +22,9 @@ public class TankClient extends JFrame
 	public static final int GAME_HEIGHT = 600;
 	Image OffScreenImage = null;
 	Tank myTank = new Tank(50, 50);
-	Missile m = new Missile(50, 50, Dir.D);
 	private JPanel contentPane;
+	
+	Vector<Missile> m = new Vector<>();
 
 	/**
 	 * Launch the application.
@@ -55,6 +57,7 @@ public class TankClient extends JFrame
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				myTank.keyAction(arg0);
+				Missile.keyAction(arg0, myTank, m);
 			}
 			@Override
 			public void keyReleased(KeyEvent arg0) {
@@ -86,8 +89,11 @@ public class TankClient extends JFrame
 	{
 		super.paint(g);           //不加这句不会清除以前的图像
 		myTank.draw(g);
-		m.draw(g);
-		
+		if (m != null)
+		{
+			for (Missile t : m)
+				t.draw(g);
+		}
 	}
 	
 	public void update(Graphics g)		//双缓存技术
