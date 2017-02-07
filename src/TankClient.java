@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import  java.awt.Image;
 
@@ -20,6 +21,7 @@ public class TankClient extends JFrame
 	public static final int GAME_HEIGHT = 600;
 	Image OffScreenImage = null;
 	Tank myTank = new Tank(50, 50);
+	Missile m = new Missile(50, 50, Dir.D);
 	private JPanel contentPane;
 
 	/**
@@ -84,6 +86,7 @@ public class TankClient extends JFrame
 	{
 		super.paint(g);           //不加这句不会清除以前的图像
 		myTank.draw(g);
+		m.draw(g);
 		
 	}
 	
