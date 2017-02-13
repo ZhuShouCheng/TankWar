@@ -12,9 +12,13 @@ public class Tank
 	private final int Xmove = 5;
 	private final int Ymove = 5;
 	
+	private static final int WIDTH = 30;
+	private static final int HEIGHT = 30;
+	
 	private int x;
 	private int y;
 	private Dir dir = Dir.STOP;
+	Dir ptdir = Dir.D;
 	
 	boolean BW = false,BD = false,BS = false,BA =false;
 	public Tank(int x,int y)
@@ -29,9 +33,34 @@ public class Tank
 		g.setColor(Color.red);
 		g.fillOval(x, y, 30, 30);
 		g.setColor(c);
-		
-//		locationDirection();
-//		Show();
+
+		switch (ptdir)
+		{
+			case W:
+				g.drawLine(this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT/2, this.x + Tank.WIDTH/2, this.y);
+				break;
+			case S:
+				g.drawLine(this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT/2, this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT);
+				break;
+			case A:
+				g.drawLine(this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT/2, this.x, this.y + Tank.HEIGHT/2);
+				break;
+			case D:
+				g.drawLine(this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT/2, this.x + Tank.WIDTH, this.y + Tank.HEIGHT/2);
+				break;
+			case WD:
+				g.drawLine(this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT/2, this.x + Tank.WIDTH, this.y);
+				break;
+			case WA:
+				g.drawLine(this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT/2, this.x, this.y);
+				break;
+			case SD:
+				g.drawLine(this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT/2, this.x + Tank.WIDTH, this.y + Tank.HEIGHT);
+				break;
+			case SA:
+				g.drawLine(this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT/2, this.x, this.y + Tank.HEIGHT);
+				break;
+		}
 		move();
 	}
 	public void move()
@@ -68,6 +97,11 @@ public class Tank
 				break;
 			case STOP:
 				break;
+		}
+		
+		if (dir != Dir.STOP)
+		{
+			ptdir = dir;
 		}
 	}
 	
