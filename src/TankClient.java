@@ -6,12 +6,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import  java.awt.Image;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Iterator;
 import java.util.Vector;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -21,11 +21,12 @@ public class TankClient extends JFrame
 	public static final int GAME_WIDTH = 800;
 	public static final int GAME_HEIGHT = 600;
 	Image OffScreenImage = null;
-	Tank myTank = new Tank(50, 50);
+	Tank myTank = new Tank(50, 50,true,this);
+	Tank enemyTank = new Tank(200,200,false,this);
+	
 	private JPanel contentPane;
 	
 	Vector<Missile> m = new Vector<>();
-
 	/**
 	 * Launch the application.
 	 */
@@ -57,7 +58,6 @@ public class TankClient extends JFrame
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				myTank.keyAction(arg0);
-				Missile.keyAction(arg0, myTank, m);
 			}
 			@Override
 			public void keyReleased(KeyEvent arg0) {
@@ -89,11 +89,17 @@ public class TankClient extends JFrame
 	{
 		super.paint(g);           //不加这句不会清除以前的图像
 		myTank.draw(g);
-		if (m != null)
+		enemyTank.draw(g);
+		g.drawString("number：" + m.size(), 60, 60);		//设置位置太小会被上面的框挡住
+		
+		for (int i = 0; i < m.size(); i++)
 		{
-			for (Missile t : m)
-				t.draw(g);
+			Missile missile = m.get(i);
+			missile.hitTank(enemyTank);
+			missile.draw(g, m);
 		}
+		
+		
 	}
 	
 	public void update(Graphics g)		//双缓存技术

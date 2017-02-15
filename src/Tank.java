@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.util.Vector;
 
 enum Dir{
 	W,D,S,A,WD,SD,SA,WA,STOP
@@ -11,30 +13,44 @@ public class Tank
 {
 	private final int Xmove = 5;
 	private final int Ymove = 5;
-	
 	private static final int WIDTH = 30;
 	private static final int HEIGHT = 30;
 	
 	private int x;
 	private int y;
 	private Dir dir = Dir.STOP;
-	Dir ptdir = Dir.D;
+	private boolean good;
+	TankClient tc = null;
+	Dir ptDir = Dir.D;
 	
-	boolean BW = false,BD = false,BS = false,BA =false;
-	public Tank(int x,int y)
+	boolean live = true;
+	boolean BW = false,BD = false,BS = false,BA = false;
+	public Tank(int x,int y,boolean good)
 	{
 		this.x = x;
 		this.y = y;
+		this.good = good;
+	}
+	
+	public Tank(int x,int y,boolean good,TankClient tc)
+	{
+		this(x, y,good);
+		this.tc = tc;
 	}
 	
 	public void draw(Graphics g)
 	{
+		if (!live) return;
 		Color c = g.getColor();
+		if (good)
 		g.setColor(Color.red);
-		g.fillOval(x, y, 30, 30);
+		else {
+			g.setColor(Color.green);
+		}
+		g.fillOval(x, y, WIDTH, HEIGHT);
 		g.setColor(c);
-
-		switch (ptdir)
+		
+		switch (ptDir)
 		{
 			case W:
 				g.drawLine(this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT/2, this.x + Tank.WIDTH/2, this.y);
@@ -60,7 +76,11 @@ public class Tank
 			case SA:
 				g.drawLine(this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT/2, this.x, this.y + Tank.HEIGHT);
 				break;
+			case STOP:
+				break;
 		}
+//		locationDirection();
+//		Show();
 		move();
 	}
 	public void move()
@@ -69,31 +89,67 @@ public class Tank
 		{
 			case W:
 				y -= Ymove;
+				if (x < 0 || x > TankClient.GAME_WIDTH - 50 || y > TankClient.GAME_HEIGHT - 50 || y < 0)
+				{
+					y += Ymove;
+				}
 				break;
 			case S:
 				y += Ymove;
+				if (x < 0 || x > TankClient.GAME_WIDTH - 50 || y > TankClient.GAME_HEIGHT - 50 || y < 0)
+				{
+					y -= Ymove;
+				}
 				break;
 			case A:
 				x -= Xmove;
+				if (x < 0 || x > TankClient.GAME_WIDTH - 50 || y > TankClient.GAME_HEIGHT - 50  || y < 0)
+				{
+					x += Xmove;
+				}
 				break;
 			case D:
 				x += Xmove;
+				if (x < 0 || x > TankClient.GAME_WIDTH - 50  || y > TankClient.GAME_HEIGHT - 50  || y < 0)
+				{
+					x -= Xmove;
+				}
 				break;
 			case WD:
 				x += Xmove;
 				y -= Ymove;
+				if (x < 0 || x > TankClient.GAME_WIDTH - 50  || y > TankClient.GAME_HEIGHT - 50  || y < 0)
+				{
+					x -= Xmove;
+					y += Ymove;
+				}
 				break;
 			case WA:
 				x -= Xmove;
 				y -= Ymove;
+				if (x < 0 || x > TankClient.GAME_WIDTH - 50  || y > TankClient.GAME_HEIGHT - 50  || y < 0)
+				{
+					x += Xmove;
+					y += Ymove;
+				}
 				break;
 			case SD:
 				x += Xmove;
 				y += Ymove;
+				if (x < 0 || x > TankClient.GAME_WIDTH - 50  || y > TankClient.GAME_HEIGHT - 50  || y < 0)
+				{
+					x -= Xmove;
+					y -= Ymove;
+				}
 				break;
 			case SA:
 				x -= Xmove;
 				y += Ymove;
+				if (x < 0 || x > TankClient.GAME_WIDTH - 50  || y > TankClient.GAME_HEIGHT - 50  || y < 0)
+				{
+					x += Xmove;
+					y -= Ymove;
+				}
 				break;
 			case STOP:
 				break;
@@ -101,8 +157,9 @@ public class Tank
 		
 		if (dir != Dir.STOP)
 		{
-			ptdir = dir;
+			ptDir = dir;
 		}
+			
 	}
 	
 	public void locationDirection()
@@ -177,39 +234,25 @@ public class Tank
 		{
 
 			BA = false;
+		}		
+		else if (key == KeyEvent.VK_J)
+		{
+			tc.m.add(fire());
 		}
 		
 		locationDirection();
 	}
-
-	public int getX()
+	
+	public Missile fire()
 	{
-		return x;
+		int x = this.x + Tank.WIDTH/2 - Missile.WIDTH/2;
+		int y = this.y + Tank.HEIGHT/2 - Missile.HEIGHT/2;
+		return new Missile(x, y, ptDir);
 	}
-
-	public void setX(int x)
+	
+	public Rectangle getRect()
 	{
-		this.x = x;
-	}
-
-	public int getY()
-	{
-		return y;
-	}
-
-	public void setY(int y)
-	{
-		this.y = y;
-	}
-
-	public Dir getDir()
-	{
-		return dir;
-	}
-
-	public void setDir(Dir dir)
-	{
-		this.dir = dir;
+		return new Rectangle(x,y,WIDTH,HEIGHT);	
 	}
 	
 /*	public void Show()
