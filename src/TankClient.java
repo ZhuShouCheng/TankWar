@@ -11,7 +11,7 @@ import  java.awt.Image;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Iterator;
+import java.util.Random;
 import java.util.Vector;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -21,12 +21,13 @@ public class TankClient extends JFrame
 	public static final int GAME_WIDTH = 800;
 	public static final int GAME_HEIGHT = 600;
 	Image OffScreenImage = null;
-	Tank myTank = new Tank(50, 50,true,this);
-	Tank enemyTank = new Tank(200,200,false,this);
-	
+	Tank myTank = new Tank(50, 50,true,Dir.STOP,this);
 	private JPanel contentPane;
 	
 	Vector<Missile> m = new Vector<>();
+	Vector<Explode> e = new Vector<>();
+	Vector<Tank> enemyTanks = new Vector<>();
+	
 	/**
 	 * Launch the application.
 	 */
@@ -81,6 +82,10 @@ public class TankClient extends JFrame
 
 	public void start()
 	{
+		for (int i = 0; i < 10; i++)
+		{
+			enemyTanks.add(new Tank(50, 100 + i * 30,false,Dir.D,this));
+		}
 		setVisible(true);
 		
 		new Thread(new RePaint()).start();
@@ -88,17 +93,29 @@ public class TankClient extends JFrame
 	public void paint(Graphics g)
 	{
 		super.paint(g);           //不加这句不会清除以前的图像
+		g.drawString("tank count : " + enemyTanks.size() ,10, 70);
 		myTank.draw(g);
-		enemyTank.draw(g);
-		g.drawString("number：" + m.size(), 60, 60);		//设置位置太小会被上面的框挡住
+		g.drawString("number : " + m.size(), 10, 50);		//设置位置太小会被上面的框挡住
 		
+		
+		for (int k = 0; k < enemyTanks.size(); k++)
+		{
+			Tank enemyTank = enemyTanks.get(k);
+			enemyTank.draw(g);
+		}
 		for (int i = 0; i < m.size(); i++)
 		{
 			Missile missile = m.get(i);
-			missile.hitTank(enemyTank);
+			missile.hitTanks(enemyTanks);
+			missile.hitTank(myTank);
 			missile.draw(g, m);
 		}
 		
+		for (int j = 0; j < e.size(); j++)
+		{
+			Explode explode = e.get(j);
+			explode.draw(g);
+		}
 		
 	}
 	

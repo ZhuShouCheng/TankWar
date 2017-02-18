@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 import java.util.Vector;
 
 enum Dir{
@@ -13,15 +14,22 @@ public class Tank
 {
 	private final int Xmove = 5;
 	private final int Ymove = 5;
-	private static final int WIDTH = 30;
-	private static final int HEIGHT = 30;
+	static final int WIDTH = 30;
+	static final int HEIGHT = 30;
+	static Random random = new Random();
 	
 	private int x;
 	private int y;
 	private Dir dir = Dir.STOP;
 	private boolean good;
+	public boolean isGood()
+	{
+		return good;
+	}
+
 	TankClient tc = null;
 	Dir ptDir = Dir.D;
+	private int step = random.nextInt(12) + 3;
 	
 	boolean live = true;
 	boolean BW = false,BD = false,BS = false,BA = false;
@@ -32,15 +40,20 @@ public class Tank
 		this.good = good;
 	}
 	
-	public Tank(int x,int y,boolean good,TankClient tc)
+	public Tank(int x,int y,boolean good,Dir dir,TankClient tc)
 	{
 		this(x, y,good);
+		this.dir = dir;
 		this.tc = tc;
 	}
 	
 	public void draw(Graphics g)
 	{
-		if (!live) return;
+		if (!live) 
+		{
+			if (!good)
+				tc.enemyTanks.remove(this);
+		}
 		Color c = g.getColor();
 		if (good)
 		g.setColor(Color.red);
@@ -159,7 +172,22 @@ public class Tank
 		{
 			ptDir = dir;
 		}
+		
+		if (!good)
+		{
+			Dir[] d = Dir.values();
 			
+			if (step == 0)
+			{
+				step = random.nextInt(12) + 3;
+				int r = random.nextInt(8);
+				dir = d[r];
+			}
+			step--;
+			
+			if (random.nextInt(40) > 38)
+				this.fire();
+		}
 	}
 	
 	public void locationDirection()
@@ -245,9 +273,11 @@ public class Tank
 	
 	public Missile fire()
 	{
+		if (!live) return null;
+		
 		int x = this.x + Tank.WIDTH/2 - Missile.WIDTH/2;
 		int y = this.y + Tank.HEIGHT/2 - Missile.HEIGHT/2;
-		return new Missile(x, y, ptDir);
+		return new Missile(x, y, ptDir,good,tc);
 	}
 	
 	public Rectangle getRect()
