@@ -100,6 +100,8 @@ public class TankClient extends JFrame
 		myTank.draw(g);
 		g.drawString("number : " + m.size(), 10, 50);		//设置位置太小会被上面的框挡住
 		
+		g.drawString("tank life: " + myTank.getLife(), 10, 90);
+		
 		
 		for (int k = 0; k < enemyTanks.size(); k++)
 		{

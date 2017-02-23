@@ -99,7 +99,15 @@ public class Missile
 		if (this.live && this.getRect().intersects(tank.getRect()) 
 				&& tank.live && this.good != tank.isGood())
 		{
-			tank.live = false;
+			if (tank.isGood())
+			{
+				tank.setLife(tank.getLife() - 20);
+				if (tank.getLife() <= 0)
+					tank.live = false;
+			}
+			else {
+				tank.live = false;
+			}
 			live = false;
 			Explode explode = new Explode(x,y,tc);
 			tc.e.add(explode);

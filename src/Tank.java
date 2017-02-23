@@ -22,6 +22,17 @@ public class Tank
 	private int y;
 	private int oldX;
 	private int oldY;
+	private int life = 100;
+	public int getLife()
+	{
+		return life;
+	}
+
+	public void setLife(int life)
+	{
+		this.life = life;
+	}
+
 	private Dir dir = Dir.STOP;
 	private boolean good;
 	public boolean isGood()
