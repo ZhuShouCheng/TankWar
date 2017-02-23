@@ -20,6 +20,8 @@ public class Tank
 	
 	private int x;
 	private int y;
+	private int oldX;
+	private int oldY;
 	private Dir dir = Dir.STOP;
 	private boolean good;
 	public boolean isGood()
@@ -37,6 +39,8 @@ public class Tank
 	{
 		this.x = x;
 		this.y = y;
+		this.oldX = x;
+		this.oldY = y;
 		this.good = good;
 	}
 	
@@ -53,6 +57,21 @@ public class Tank
 		{
 			if (!good)
 				tc.enemyTanks.remove(this);
+			else 
+			{
+				try
+				{
+					Thread.sleep(500);
+				}
+				catch (InterruptedException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println("game over!!!");
+				System.exit(0);
+				return;
+			}
 		}
 		Color c = g.getColor();
 		if (good)
@@ -92,12 +111,13 @@ public class Tank
 			case STOP:
 				break;
 		}
-//		locationDirection();
-//		Show();
+
 		move();
 	}
 	public void move()
 	{
+		oldX = x;
+		oldY = y;
 		switch (dir)
 		{
 			case W:
@@ -186,7 +206,7 @@ public class Tank
 			step--;
 			
 			if (random.nextInt(40) > 38)
-				this.fire();
+				tc.m.add(fire());;
 		}
 	}
 	
@@ -285,6 +305,19 @@ public class Tank
 		return new Rectangle(x,y,WIDTH,HEIGHT);	
 	}
 	
+	public void stay()
+	{
+		x = oldX;
+		y = oldY;
+	}
+	
+	public void hitWell(Well w)
+	{
+		if (this.live && this.getRect().intersects(w.getRect()))
+		{
+			stay();
+		}
+	}
 /*	public void Show()
 	{
 		System.out.println(dir);

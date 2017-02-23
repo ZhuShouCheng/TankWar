@@ -23,6 +23,8 @@ public class TankClient extends JFrame
 	Image OffScreenImage = null;
 	Tank myTank = new Tank(50, 50,true,Dir.STOP,this);
 	private JPanel contentPane;
+	Well w1 = new Well(300, 100, 200, 50);
+	Well w2 = new Well(100, 200, 50, 200);
 	
 	Vector<Missile> m = new Vector<>();
 	Vector<Explode> e = new Vector<>();
@@ -94,6 +96,7 @@ public class TankClient extends JFrame
 	{
 		super.paint(g);           //不加这句不会清除以前的图像
 		g.drawString("tank count : " + enemyTanks.size() ,10, 70);
+		
 		myTank.draw(g);
 		g.drawString("number : " + m.size(), 10, 50);		//设置位置太小会被上面的框挡住
 		
@@ -101,6 +104,8 @@ public class TankClient extends JFrame
 		for (int k = 0; k < enemyTanks.size(); k++)
 		{
 			Tank enemyTank = enemyTanks.get(k);
+			enemyTank.hitWell(w1);
+			enemyTank.hitWell(w2);
 			enemyTank.draw(g);
 		}
 		for (int i = 0; i < m.size(); i++)
@@ -108,6 +113,8 @@ public class TankClient extends JFrame
 			Missile missile = m.get(i);
 			missile.hitTanks(enemyTanks);
 			missile.hitTank(myTank);
+			missile.hitWell(w1);
+			missile.hitWell(w2);
 			missile.draw(g, m);
 		}
 		
@@ -117,6 +124,8 @@ public class TankClient extends JFrame
 			explode.draw(g);
 		}
 		
+		w1.draw(g);
+		w2.draw(g);
 	}
 	
 	public void update(Graphics g)		//双缓存技术

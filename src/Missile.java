@@ -103,7 +103,9 @@ public class Missile
 			live = false;
 			Explode explode = new Explode(x,y,tc);
 			tc.e.add(explode);
+			
 		}
+		
 	}
 	
 	public void hitTanks(Vector<Tank> tanks)
@@ -111,6 +113,14 @@ public class Missile
 		for (int i = 0; i < tanks.size(); i ++)
 		{
 			hitTank(tanks.get(i));
+		}
+	}
+	
+	public void hitWell(Well w)
+	{
+		if (this.live && this.getRect().intersects(w.getRect()))
+		{
+			this.live = false;
 		}
 	}
 	
