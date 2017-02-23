@@ -23,6 +23,7 @@ public class Tank
 	private int oldX;
 	private int oldY;
 	private int life = 100;
+	private HealthPoint HP = new HealthPoint();
 	public int getLife()
 	{
 		return life;
@@ -84,6 +85,7 @@ public class Tank
 				return;
 			}
 		}
+		if (good) HP.draw(g);
 		Color c = g.getColor();
 		if (good)
 		g.setColor(Color.red);
@@ -343,6 +345,27 @@ public class Tank
 					tank.stay();
 				}
 			}
+		}
+	}
+	
+	public void eat(HealthAdd ha)
+	{
+		if (this.live && this.getRect().intersects(ha.getRect()) && ha.live)
+		{
+			life = 100;
+			ha.live = false;
+		}
+	}
+	
+	public class HealthPoint
+	{
+		public void draw(Graphics graphics)
+		{
+			Color c = graphics.getColor();
+			graphics.setColor(Color.red);
+			graphics.drawRect(x, y - 15, 30, 10);
+			graphics.fillRect(x, y - 15, life / 10 *3, 10);
+			graphics.setColor(c);
 		}
 	}
 /*	public void Show()

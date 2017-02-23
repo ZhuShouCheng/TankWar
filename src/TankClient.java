@@ -25,6 +25,7 @@ public class TankClient extends JFrame
 	private JPanel contentPane;
 	Well w1 = new Well(300, 100, 200, 50);
 	Well w2 = new Well(100, 200, 50, 200);
+	HealthAdd ha = new HealthAdd(this);
 	
 	Vector<Missile> m = new Vector<>();
 	Vector<Explode> e = new Vector<>();
@@ -97,7 +98,11 @@ public class TankClient extends JFrame
 		super.paint(g);           //不加这句不会清除以前的图像
 		g.drawString("tank count : " + enemyTanks.size() ,10, 70);
 		
+		ha.draw(g);
+		myTank.eat(ha);
 		myTank.draw(g);
+		
+		
 		g.drawString("number : " + m.size(), 10, 50);		//设置位置太小会被上面的框挡住
 		
 		g.drawString("tank life: " + myTank.getLife(), 10, 90);
