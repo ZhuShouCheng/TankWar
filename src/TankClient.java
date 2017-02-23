@@ -86,7 +86,7 @@ public class TankClient extends JFrame
 	{
 		for (int i = 0; i < 10; i++)
 		{
-			enemyTanks.add(new Tank(50, 100 + i * 30,false,Dir.D,this));
+			enemyTanks.add(new Tank(50, 100 + i * 50,false,Dir.D,this));
 		}
 		setVisible(true);
 		
@@ -106,6 +106,7 @@ public class TankClient extends JFrame
 			Tank enemyTank = enemyTanks.get(k);
 			enemyTank.hitWell(w1);
 			enemyTank.hitWell(w2);
+			enemyTank.hitOtherTanks(enemyTanks);
 			enemyTank.draw(g);
 		}
 		for (int i = 0; i < m.size(); i++)

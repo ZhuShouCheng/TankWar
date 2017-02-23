@@ -318,6 +318,22 @@ public class Tank
 			stay();
 		}
 	}
+	
+	public void hitOtherTanks(Vector<Tank> tanks)
+	{
+		for (int i = 0; i < tanks.size(); i++)
+		{
+			Tank tank = tanks.get(i);
+			if (this != tank)
+			{
+				if (this.live && tank.live && this.getRect().intersects(tank.getRect()))
+				{
+					this.stay();
+					tank.stay();
+				}
+			}
+		}
+	}
 /*	public void Show()
 	{
 		System.out.println(dir);
