@@ -96,6 +96,11 @@ public class TankClient extends JFrame
 	public void paint(Graphics g)
 	{
 		super.paint(g);           //不加这句不会清除以前的图像
+		if (enemyTanks.size() == 0)
+		{
+			g.drawString("WIN!!!",400, 300);
+			return;
+		}
 		g.drawString("tank count : " + enemyTanks.size() ,10, 70);
 		
 		ha.draw(g);

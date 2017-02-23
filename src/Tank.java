@@ -71,18 +71,7 @@ public class Tank
 				tc.enemyTanks.remove(this);
 			else 
 			{
-				try
-				{
-					Thread.sleep(500);
-				}
-				catch (InterruptedException e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				System.out.println("game over!!!");
-				System.exit(0);
-				return;
+				this.live = false;
 			}
 		}
 		if (good) HP.draw(g);
@@ -279,17 +268,14 @@ public class Tank
 		if (key == KeyEvent.VK_W)
 		{
 			BW = false;
-
 		}
 		else if (key == KeyEvent.VK_S)
 		{
 			BS = false;
-
 		}
 		else if (key == KeyEvent.VK_D)
 		{
 			BD = false;
-
 		}
 		else if (key == KeyEvent.VK_A)
 		{
@@ -299,6 +285,10 @@ public class Tank
 		else if (key == KeyEvent.VK_J)
 		{
 			tc.m.add(fire());
+		}
+		else if (key == KeyEvent.VK_F2)
+		{
+			this.live = true;
 		}
 		
 		locationDirection();
