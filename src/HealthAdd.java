@@ -3,14 +3,31 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
+/**
+ * 用于给坦克加血的血块
+ * @author zhushoucheng
+ *
+ */
 public class HealthAdd
 {
+	/**
+	 * 血块的x轴位置
+	 */
 	private int x;
+	/**
+	 * 血块的y轴位置
+	 */
 	private int y;
 	TankClient tc;
 	
+	/**
+	 * 血块的存活与否
+	 */
 	boolean live = true;
 	int step = 0;
+	/**
+	 * 血块移动的位置
+	 */
 	int [][] pos = {
 			{200,200},{400,300},{500,200}
 	};
@@ -35,6 +52,9 @@ public class HealthAdd
 			move();
 	}
 	
+	/**
+	 * 血块的移动
+	 */
 	public void move()
 	{
 		step++;

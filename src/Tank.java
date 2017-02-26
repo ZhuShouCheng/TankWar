@@ -1,7 +1,11 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.Vector;
 
@@ -9,21 +13,74 @@ enum Dir{
 	W,D,S,A,WD,SD,SA,WA,STOP
 };
 
-
+/**
+ * 坦克类
+ * @author zhushoucheng
+ *
+ */
 public class Tank
 {
+	/**
+	 *  x方向上移动距离
+	 */
 	private final int Xmove = 5;
+	/**
+	 *  y方向上移动距离
+	 */
 	private final int Ymove = 5;
+	/**
+	 * 坦克宽度
+	 */
 	static final int WIDTH = 30;
+	/**
+	 * 坦克高度
+	 */
 	static final int HEIGHT = 30;
 	static Random random = new Random();
 	
+	/**
+	 * 坦克的x轴位置
+	 */
 	private int x;
+	/**
+	 * 坦克的y轴位置
+	 */
 	private int y;
 	private int oldX;
 	private int oldY;
+	/**
+	 * 坦克生命值
+	 */
 	private int life = 100;
+	
+	private static Toolkit toolkit = Toolkit.getDefaultToolkit();
+	private static Image[] TankImages = null;
+	private static Map<String, Image> imgs = new HashMap<>();
+	
+	static {
+		TankImages = new Image[]
+		{
+			toolkit.getImage(Tank.class.getClassLoader().getResource("imgs/tankD.gif")),
+			toolkit.getImage(Tank.class.getClassLoader().getResource("imgs/tankL.gif")),
+			toolkit.getImage(Tank.class.getClassLoader().getResource("imgs/tankLD.gif")),
+			toolkit.getImage(Tank.class.getClassLoader().getResource("imgs/tankLU.gif")),
+			toolkit.getImage(Tank.class.getClassLoader().getResource("imgs/tankR.gif")),
+			toolkit.getImage(Tank.class.getClassLoader().getResource("imgs/tankRD.gif")),
+			toolkit.getImage(Tank.class.getClassLoader().getResource("imgs/tankRU.gif")),
+			toolkit.getImage(Tank.class.getClassLoader().getResource("imgs/tankU.gif"))
+		};
+		imgs.put("D",TankImages[0]);
+		imgs.put("L",TankImages[1]);
+		imgs.put("LD",TankImages[2]);
+		imgs.put("LU",TankImages[3]);
+		imgs.put("R",TankImages[4]);
+		imgs.put("RD",TankImages[5]);
+		imgs.put("RU",TankImages[6]);
+		imgs.put("U",TankImages[7]);
+	}
+	
 	private HealthPoint HP = new HealthPoint();
+	
 	public int getLife()
 	{
 		return life;
@@ -35,6 +92,9 @@ public class Tank
 	}
 
 	private Dir dir = Dir.STOP;
+	/**
+	 * 坦克的好坏
+	 */
 	private boolean good;
 	public boolean isGood()
 	{
@@ -76,39 +136,39 @@ public class Tank
 		}
 		if (good) HP.draw(g);
 		Color c = g.getColor();
-		if (good)
+/*		if (good)
 		g.setColor(Color.red);
 		else {
 			g.setColor(Color.green);
 		}
 		g.fillOval(x, y, WIDTH, HEIGHT);
-		g.setColor(c);
+		g.setColor(c);*/
 		
 		switch (ptDir)
 		{
 			case W:
-				g.drawLine(this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT/2, this.x + Tank.WIDTH/2, this.y);
+				g.drawImage(imgs.get("U"),x,y,null);
 				break;
 			case S:
-				g.drawLine(this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT/2, this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT);
+				g.drawImage(imgs.get("D"),x,y,null);
 				break;
 			case A:
-				g.drawLine(this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT/2, this.x, this.y + Tank.HEIGHT/2);
+				g.drawImage(imgs.get("L"),x,y,null);
 				break;
 			case D:
-				g.drawLine(this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT/2, this.x + Tank.WIDTH, this.y + Tank.HEIGHT/2);
+				g.drawImage(imgs.get("R"),x,y,null);
 				break;
 			case WD:
-				g.drawLine(this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT/2, this.x + Tank.WIDTH, this.y);
+				g.drawImage(imgs.get("RU"),x,y,null);
 				break;
 			case WA:
-				g.drawLine(this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT/2, this.x, this.y);
+				g.drawImage(imgs.get("LU"),x,y,null);
 				break;
 			case SD:
-				g.drawLine(this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT/2, this.x + Tank.WIDTH, this.y + Tank.HEIGHT);
+				g.drawImage(imgs.get("RD"),x,y,null);
 				break;
 			case SA:
-				g.drawLine(this.x + Tank.WIDTH/2, this.y + Tank.HEIGHT/2, this.x, this.y + Tank.HEIGHT);
+				g.drawImage(imgs.get("LD"),x,y,null);
 				break;
 			case STOP:
 				break;
@@ -116,6 +176,9 @@ public class Tank
 
 		move();
 	}
+	/**
+	 * 坦克的移动，一共有8个方向可供移动
+	 */
 	public void move()
 	{
 		oldX = x;
@@ -211,7 +274,9 @@ public class Tank
 				tc.m.add(fire());;
 		}
 	}
-	
+	/**
+	 * 坦克方向的判定
+	 */
 	public void locationDirection()
 	{
 		if (BW && !BA && !BS && !BD)
@@ -234,7 +299,10 @@ public class Tank
 			dir = Dir.STOP;
 		}
 	}
-	
+	/**
+	 * 键盘按下时事件
+	 * @param arg0
+	 */
 	public void keyAction(KeyEvent arg0)
 	{
 		int key = arg0.getKeyCode();
@@ -261,7 +329,10 @@ public class Tank
 		
 		locationDirection();
 	}
-	
+	/**
+	 * 键盘松开时事件
+	 * @param arg0
+	 */
 	public void keyReset(KeyEvent arg0)
 	{
 		int key = arg0.getKeyCode();
@@ -293,7 +364,10 @@ public class Tank
 		
 		locationDirection();
 	}
-	
+	/**
+	 * 坦克开火 
+	 * @return 返回一个与炮筒方向一致的炮弹
+	 */
 	public Missile fire()
 	{
 		if (!live) return null;
@@ -313,7 +387,10 @@ public class Tank
 		x = oldX;
 		y = oldY;
 	}
-	
+	/**
+	 * 坦克装上墙 碰撞判定
+	 * @param w
+	 */
 	public void hitWell(Well w)
 	{
 		if (this.live && this.getRect().intersects(w.getRect()))
@@ -321,7 +398,10 @@ public class Tank
 			stay();
 		}
 	}
-	
+	/**
+	 * 坦克撞上其他坦克
+	 * @param tanks 敌方坦克的集合
+	 */
 	public void hitOtherTanks(Vector<Tank> tanks)
 	{
 		for (int i = 0; i < tanks.size(); i++)
@@ -337,7 +417,10 @@ public class Tank
 			}
 		}
 	}
-	
+	/**
+	 * 坦克吃到血块   碰撞判定
+	 * @param ha
+	 */
 	public void eat(HealthAdd ha)
 	{
 		if (this.live && this.getRect().intersects(ha.getRect()) && ha.live)
@@ -346,7 +429,11 @@ public class Tank
 			ha.live = false;
 		}
 	}
-	
+	/**
+	 * 血条的显示
+	 * @author zhushoucheng
+	 *
+	 */
 	public class HealthPoint
 	{
 		public void draw(Graphics graphics)

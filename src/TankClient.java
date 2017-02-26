@@ -16,9 +16,20 @@ import java.util.Vector;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+/**
+ * 本类是坦克大战的主体程序，内部调用了各个类的方法，实现了界面的显示
+ * @author zhushoucheng
+ *
+ */
 public class TankClient extends JFrame
 {
+	/**
+	 * 整体游戏高度
+	 */
 	public static final int GAME_WIDTH = 800;
+	/**
+	 * 整体游戏宽度
+	 */
 	public static final int GAME_HEIGHT = 600;
 	Image OffScreenImage = null;
 	Tank myTank = new Tank(50, 50,true,Dir.STOP,this);
@@ -51,9 +62,10 @@ public class TankClient extends JFrame
 			}
 		});
 	}
-
+	
 	/**
-	 * Create the frame.
+	 * 界面的构造方法
+	 * @param s 界面的标题名
 	 */
 	public TankClient(String s)
 	{
@@ -83,6 +95,9 @@ public class TankClient extends JFrame
 		setContentPane(contentPane);
 	}
 
+	/**
+	 * 用于敌方坦克的添加 与线程的开始
+	 */
 	public void start()
 	{
 		for (int i = 0; i < 10; i++)
@@ -93,6 +108,15 @@ public class TankClient extends JFrame
 		
 		new Thread(new RePaint()).start();
 	}
+	/**
+	 * 依次画出左上角的提示信息
+	 * 		血块
+	 * 		玩家坦克
+	 * 		敌方坦克
+	 * 		子弹
+	 * 		爆炸
+	 * @param g
+	 */
 	public void paint(Graphics g)
 	{
 		super.paint(g);           //不加这句不会清除以前的图像
