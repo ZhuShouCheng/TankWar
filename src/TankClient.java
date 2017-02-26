@@ -102,17 +102,7 @@ public class TankClient extends JFrame
 	 */
 	public void start()
 	{
-		Properties props = new Properties();
-		try
-		{
-			props.load(this.getClass().getClassLoader().getResourceAsStream("config/tankproperties"));
-		}
-		catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		int initTankCount =Integer.parseInt(props.getProperty("initTankcount"));
+		int initTankCount = Property.getProperty("initTankcount");
 		for (int i = 0; i < initTankCount; i++)
 		{
 			enemyTanks.add(new Tank(50, 100 + i * 50,false,Dir.D,this));
