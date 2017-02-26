@@ -11,6 +11,8 @@ import  java.awt.Image;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.Random;
 import java.util.Vector;
 import java.awt.event.KeyAdapter;
@@ -100,7 +102,18 @@ public class TankClient extends JFrame
 	 */
 	public void start()
 	{
-		for (int i = 0; i < 10; i++)
+		Properties props = new Properties();
+		try
+		{
+			props.load(this.getClass().getClassLoader().getResourceAsStream("config/tankproperties"));
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int initTankCount =Integer.parseInt(props.getProperty("initTankcount"));
+		for (int i = 0; i < initTankCount; i++)
 		{
 			enemyTanks.add(new Tank(50, 100 + i * 50,false,Dir.D,this));
 		}
